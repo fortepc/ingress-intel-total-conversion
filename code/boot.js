@@ -686,6 +686,7 @@ function boot() {
   window.setupDialogs();
   window.setupDataTileParams();
   window.setupMap();
+  window.setupOMS();
   window.search.setup();
   window.setupRedeem();
   window.setupLargeImagePreview();
@@ -817,7 +818,6 @@ try { console.log('Loading included JS now'); } catch(e) {}
 @@INCLUDERAW:external/L.Geodesic.js@@
 @@INCLUDERAW:external/Leaflet.GoogleMutant.js@@
 @@INCLUDERAW:external/oms.min.js@@
-window.setupOMS();
 
 @@INCLUDERAW:external/jquery-3.3.1.min.js@@
 @@INCLUDERAW:external/jquery-ui-1.12.1.min.js@@
