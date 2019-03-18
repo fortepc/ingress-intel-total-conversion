@@ -79,7 +79,7 @@ window.plugin.tidyLinks.updateLayer = function() {
     return;
   }
 
-  var triangles = window.delaunay.triangulate(locations);
+  var triangles = window.delaunay.triangulate(locations.map(function (p) { return [p.x,p.y] }));
 
   var drawnLinkCount = 0;
 
@@ -119,11 +119,14 @@ window.plugin.tidyLinks.updateLayer = function() {
     }
   }
 
-  $.each(triangles, function(idx, triangle) {
-    drawLink(triangle.a,triangle.b);
-    drawLink(triangle.b,triangle.c);
-    drawLink(triangle.c,triangle.a);
-  });
+  for (var i = 0; i<triangles.length;) {
+    var a = locations[triangles[i++]],
+        b = locations[triangles[i++]],
+        c = locations[triangles[i++]];
+    drawLink(a,b);
+    drawLink(b,c);
+    drawLink(c,a);
+  }
 }
 
 window.plugin.tidyLinks.setup = function() {
