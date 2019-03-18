@@ -11,34 +11,42 @@
 
 // PLUGIN START ////////////////////////////////////////////////////////
 
-
 // use own namespace for plugin
-window.plugin.panControl = function() {};
+var panControl = {};
+window.plugin.panControl = panControl;
 
-window.plugin.panControl.setup  = function() {
-  try { console.log('Loading Leaflet.Pancontrol JS now'); } catch(e) {}
-  @@INCLUDERAW:external/L.Control.Pan.js@@
-  try { console.log('done loading Leaflet.Pancontrol JS'); } catch(e) {}
-
-  // prevent Pancontrol from being activated by default (e.g. in minimap)
-  L.Map.mergeOptions({
-    panControl: false
-  });
-
-
-  window.map.panControl = L.control.pan({panOffset: 350});
-  window.map.addControl(window.map.panControl);
-
-  if(map.zoomControl._map) {  // Move above the zoom control
-    window.map.removeControl(map.zoomControl);
-    window.map.zoomControl = L.control.zoom();
-    window.map.addControl(window.map.zoomControl);
-  }
-
-  $('head').append('<style>@@INCLUDECSS:external/L.Control.Pan.css@@</style>');
+panControl.options = {
+  //position: 'topleft',
+  //panOffset: 350
 };
 
-var setup =  window.plugin.panControl.setup;
+function setup () {
+  try {
+    // https://github.com/kartena/Leaflet.Pancontrol
+    @@INCLUDERAW:external/L.Control.Pan.js@@
+    $('<style>').html('@@INCLUDECSS:external/L.Control.Pan.css@@').appendTo('head');
+
+  } catch(e) {
+    console.error('L.Control.Pan.js loading failed');
+    throw e;
+  }
+
+  var map = window.map;
+  L.control.pan(panControl.options).addTo(map);
+
+  if (map.zoomControl._map) {  // Move above the zoom control
+    map.zoomControl.remove();
+    L.control.zoom().addTo(map);
+  }
+
+  // L.Control.Pan.css tries to align zoom control with the pan control, but the result sucks
+  // so here is our attempt to make it better
+  $('<style>').html('\
+    .leaflet-left.has-leaflet-pan-control>.leaflet-control { left: 24px }\
+    .leaflet-top.has-leaflet-pan-control>.leaflet-control.leaflet-control-scale { left: 63px }\
+    .leaflet-left>.leaflet-control.leaflet-control-pan { left: 0 }\
+  ').appendTo('head');
+};
 
 // PLUGIN END //////////////////////////////////////////////////////////
 
