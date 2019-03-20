@@ -36,11 +36,6 @@ function setup () {
     throw e;
   }
 
-  // prevent Zoomslider from being activated by default (e.g. in minimap)
-  L.Map.mergeOptions({
-    zoomsliderControl: false
-  });
-
   var map = window.map;
   if(map.zoomControl._map) {
     map.zoomControl.remove();
