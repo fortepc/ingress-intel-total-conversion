@@ -41,8 +41,6 @@
     used in: basemap-bing
   * Yandex.js: 21998f069d00952807ae070fb5b5c9992e7a6c1f
     used in: basemap-yandex
-  * KML.js: 73b690acbdd95091e2a50456d3a99437dd120055
-    used in: overlay-kml
 
 * https://github.com/makinacorpus/Leaflet.FileLayer
   1.2.0-1-g4f0e011
