@@ -34,17 +34,23 @@ function setup () {
   var map = window.map;
   L.control.pan(panControl.options).addTo(map);
 
-  if (map.zoomControl._map) {  // Move above the zoom control
-    map.zoomControl.remove();
-    L.control.zoom().addTo(map);
+  if (map.zoomControl._map) {
+    map.zoomControl.setPosition(panControl.options.position || 'topleft') // Move above the zoom control
   }
 
   // L.Control.Pan.css tries to align zoom control with the pan control, but the result sucks
   // so here is our attempt to make it better
+  // (adapted from https://github.com/kartena/Leaflet.Pancontrol/pull/20)
   $('<style>').html('\
-    .leaflet-left.has-leaflet-pan-control>.leaflet-control { left: 24px }\
-    .leaflet-top.has-leaflet-pan-control>.leaflet-control.leaflet-control-scale { left: 63px }\
-    .leaflet-left>.leaflet-control.leaflet-control-pan { left: 0 }\
+    .leaflet-left.has-leaflet-pan-control .leaflet-control-zoom,\
+    .leaflet-left.has-leaflet-pan-control .leaflet-control-zoomslider { left: unset; }\
+    .leaflet-left.has-leaflet-pan-control { left: 24.5px; }\
+    .leaflet-left .leaflet-control-pan { left: -24.5px; }\
+    .leaflet-control-pan { width: 75px; height: 75px; }\
+    .leaflet-touch .leaflet-left.has-leaflet-pan-control { left: 26px; }\
+    .leaflet-touch .leaflet-left .leaflet-control-pan { left: -26px; }\
+    .leaflet-touch .leaflet-control-pan { width: 86px; height: 114px; }\
+    .leaflet-touch .leaflet-left .leaflet-control-pan { margin-left: 10px; }\
   ').appendTo('head');
 };
 
